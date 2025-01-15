@@ -1,11 +1,11 @@
 export type Operation = "+" | "-" | "×" | "÷";
+export type Difficulty = "easy" | "medium" | "hard" | "custom";
 
 export interface Question {
   num1: number;
   num2: number;
   operation: Operation;
   answer: number;
-  generatedAt: number; // Add this field
 }
 
 export interface QuestionHistory extends Question {
@@ -14,39 +14,49 @@ export interface QuestionHistory extends Question {
   timestamp: number;
 }
 
-export interface DifficultyRanges {
-  addition: { max: number };
-  subtraction: { min: number; max: number };
-  multiplication: { max: number };
-  division: { max: number };
+export interface OperationRange {
+  enabled: boolean;
+  min?: number;
+  max: number;
 }
 
 export interface CustomRanges {
-  addition: { enabled: boolean; max: number };
-  subtraction: { enabled: boolean; min: number; max: number };
-  multiplication: { enabled: boolean; max: number };
-  division: { enabled: boolean; max: number };
+  addition: OperationRange;
+  subtraction: OperationRange;
+  multiplication: OperationRange;
+  division: OperationRange;
 }
 
-export type Difficulty = "easy" | "medium" | "hard";
+export const TIME_OPTIONS = [
+  { value: "15", label: "15s" },
+  { value: "30", label: "30s" },
+  { value: "60", label: "60s" },
+  { value: "120", label: "120s" },
+];
 
-export const DIFFICULTY_RANGES: Record<Difficulty, DifficultyRanges> = {
+export const DIFFICULTY_RANGES = {
   easy: {
-    addition: { max: 10 },
-    subtraction: { min: 1, max: 10 },
-    multiplication: { max: 10 },
-    division: { max: 10 },
+    addition: { enabled: true, max: 20 },
+    subtraction: { enabled: true, min: 1, max: 20 },
+    multiplication: { enabled: true, max: 10 },
+    division: { enabled: true, max: 10 }
   },
   medium: {
-    addition: { max: 50 },
-    subtraction: { min: 1, max: 50 },
-    multiplication: { max: 50 },
-    division: { max: 50 },
+    addition: { enabled: true, max: 100 },
+    subtraction: { enabled: true, min: 1, max: 100 },
+    multiplication: { enabled: true, max: 25 },
+    division: { enabled: true, max: 25 }
   },
   hard: {
-    addition: { max: 100 },
-    subtraction: { min: 1, max: 100 },
-    multiplication: { max: 100 },
-    division: { max: 100 },
+    addition: { enabled: true, max: 1000 },
+    subtraction: { enabled: true, min: 1, max: 1000 },
+    multiplication: { enabled: true, max: 100 },
+    division: { enabled: true, max: 100 }
   },
-};
+  custom: {
+    addition: { enabled: false, max: 1000 },
+    subtraction: { enabled: false, min: 501, max: 1000 },
+    multiplication: { enabled: false, max: 100 },
+    division: { enabled: false, max: 100 }
+  }
+} as const;

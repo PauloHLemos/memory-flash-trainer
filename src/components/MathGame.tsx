@@ -30,12 +30,11 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   });
 
   const startGame = () => {
-    const newQuestion = generateQuestion(difficulty, customRanges);
     setIsPlaying(true);
     setScore(0);
     setWrongAnswers(0);
     setTimeLeft(Number(selectedTime));
-    setCurrentQuestion({ ...newQuestion, generatedAt: Date.now() });
+    setCurrentQuestion(generateQuestion(difficulty, customRanges));
     setUserAnswer("");
     setGameEnded(false);
     setQuestionHistory([]);
@@ -69,8 +68,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
       });
     }
 
-    const newQuestion = generateQuestion(difficulty, customRanges);
-    setCurrentQuestion({ ...newQuestion, generatedAt: Date.now() });
+    setCurrentQuestion(generateQuestion(difficulty, customRanges));
     setUserAnswer("");
   };
 

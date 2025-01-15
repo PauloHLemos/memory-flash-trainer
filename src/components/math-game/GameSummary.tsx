@@ -24,17 +24,24 @@ const GameSummary = ({
     ? Math.round((score / (score + wrongAnswers)) * 100) 
     : 0;
 
-  const getTimeSpent = (question: QuestionHistory): string => {
-    if (!question) return "0.0";
-    return ((question.timestamp - question.generatedAt) / 1000).toFixed(1);
+  const getTimeSpent = (index: number): string => {
+    const current = questionHistory[index];
+    const next = questionHistory[index + 1];
+    if (!current) return "0.0";
+    
+    const start = current.timestamp;
+    const end = next ? next.timestamp : (gameEnded ? Date.now() : start);
+    return ((end - start) / 1000).toFixed(1);
   };
 
   const getSortedHistory = () => {
     if (!sortByTime) return questionHistory;
     
     return [...questionHistory].sort((a, b) => {
-      const aTime = parseFloat(getTimeSpent(a));
-      const bTime = parseFloat(getTimeSpent(b));
+      const aIndex = questionHistory.indexOf(a);
+      const bIndex = questionHistory.indexOf(b);
+      const aTime = parseFloat(getTimeSpent(aIndex));
+      const bTime = parseFloat(getTimeSpent(bIndex));
       return bTime - aTime;
     });
   };
@@ -101,7 +108,7 @@ const GameSummary = ({
                   {q.num1} {q.operation} {q.num2} = {q.userAnswer}
                 </span>
                 <div className="text-sm text-muted-foreground">
-                  {getTimeSpent(q)}s
+                  {getTimeSpent(questionHistory.indexOf(q))}s
                 </div>
               </div>
               {!q.isCorrect && (
