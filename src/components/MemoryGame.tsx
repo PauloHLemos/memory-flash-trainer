@@ -47,6 +47,11 @@ const MemoryGame = () => {
         className: "bg-game-correct text-white",
       });
       setScore(prev => prev + 1);
+      // Continue with a new sequence immediately
+      const newSequence = generateSequence(5);
+      setSequence(newSequence);
+      setCurrentIndex(0);
+      setAnswer('');
     } else {
       toast({
         title: "Incorrect",
@@ -54,8 +59,8 @@ const MemoryGame = () => {
         variant: "destructive",
       });
       setScore(0);
+      setIsPlaying(false);
     }
-    setIsPlaying(false);
   };
 
   return (
