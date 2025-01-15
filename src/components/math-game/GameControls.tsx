@@ -27,17 +27,16 @@ const GameControls = ({
 }: GameControlsProps) => {
   const handleCustomRangeChange = (
     operation: keyof CustomRanges,
-    field: 'max' | 'min',
-    value: number
+    field: 'max' | 'min' | 'enabled',
+    value: number | boolean
   ) => {
-    const updatedRanges: CustomRanges = {
+    setCustomRanges({
       ...customRanges,
       [operation]: {
         ...customRanges[operation],
-        [field]: Math.max(1, value)
+        [field]: field === 'enabled' ? value : Math.max(1, value as number)
       }
-    };
-    setCustomRanges(updatedRanges);
+    });
   };
 
   return (
