@@ -1,6 +1,6 @@
 A website containing some simple brain training memory and math games I built for personal use.
 
-**Live at**: https://memory-flash-trainer.lovable.app/math-trainer
+**Live at**: https://memory-flash-trainer.lovable.app
 
 ![image](https://github.com/user-attachments/assets/e0a3872f-1dcc-40ad-a0bb-dc7a63fe61b4)
 
