@@ -34,6 +34,12 @@ const GameControls = ({
     onSubmit(answer);
   };
 
+  const handleInitialSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    // Ensure the value is at least 1
+    setInitialSize(Math.max(1, value));
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -44,7 +50,7 @@ const GameControls = ({
             min="1"
             max="10"
             value={initialSize}
-            onChange={(e) => setInitialSize(Number(e.target.value))}
+            onChange={handleInitialSizeChange}
             disabled={isPlaying}
             className="w-24"
           />
