@@ -33,6 +33,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [wrongAnswers, setWrongAnswers] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [userAnswer, setUserAnswer] = useState("");
+  const [gameEnded, setGameEnded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -78,6 +79,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     setTimeLeft(Number(selectedTime));
     setCurrentQuestion(generateQuestion());
     setUserAnswer("");
+    setGameEnded(false);
     inputRef.current?.focus();
   };
 
@@ -120,21 +122,19 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
       }, 1000);
     } else if (timeLeft === 0 && isPlaying) {
       setIsPlaying(false);
+      setGameEnded(true);
       toast({
         title: "Game Over!",
-        description: (
-          <div className="space-y-2">
-            <p>Final score: {score} points</p>
-            <p>Correct answers: {score}</p>
-            <p>Wrong answers: {wrongAnswers}</p>
-            <p>Accuracy: {Math.round((score / (score + wrongAnswers)) * 100)}%</p>
-          </div>
-        ),
+        description: "Check your final statistics below!",
       });
     }
 
     return () => clearInterval(timer);
-  }, [isPlaying, timeLeft, score, wrongAnswers, toast]);
+  }, [isPlaying, timeLeft, toast]);
+
+  const accuracy = score + wrongAnswers > 0 
+    ? Math.round((score / (score + wrongAnswers)) * 100) 
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -145,6 +145,25 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
 
       {!isPlaying ? (
         <div className="space-y-4">
+          {gameEnded && (
+            <div className="p-6 bg-card rounded-lg shadow-sm space-y-2 animate-fade-in">
+              <h3 className="text-xl font-bold text-center mb-4">Game Summary</h3>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="space-y-1">
+                  <p className="text-muted-foreground">Correct Answers</p>
+                  <p className="text-2xl font-bold text-game-correct">{score}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-muted-foreground">Wrong Answers</p>
+                  <p className="text-2xl font-bold text-game-wrong">{wrongAnswers}</p>
+                </div>
+                <div className="col-span-2 space-y-1">
+                  <p className="text-muted-foreground">Accuracy</p>
+                  <p className="text-2xl font-bold">{accuracy}%</p>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="space-y-3">
             <Label>Game Duration</Label>
             <RadioGroup
