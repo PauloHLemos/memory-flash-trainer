@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Clock, SortAsc } from "lucide-react";
 
 type Operation = "+" | "-" | "×" | "÷";
 
@@ -44,6 +44,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [gameEnded, setGameEnded] = useState(false);
   const [questionHistory, setQuestionHistory] = useState<QuestionHistory[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [sortByTime, setSortByTime] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -167,6 +168,18 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     return ((end - start) / 1000).toFixed(1);
   };
 
+  const getSortedHistory = () => {
+    if (!sortByTime) return questionHistory;
+    
+    return [...questionHistory].sort((a, b) => {
+      const aIndex = questionHistory.indexOf(a);
+      const bIndex = questionHistory.indexOf(b);
+      const aTime = parseFloat(getTimeSpent(aIndex));
+      const bTime = parseFloat(getTimeSpent(bIndex));
+      return bTime - aTime;
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -204,7 +217,27 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-2 mt-4">
-                  {questionHistory.map((q, index) => (
+                  <div className="flex justify-end mb-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSortByTime(!sortByTime)}
+                      className="text-sm"
+                    >
+                      {sortByTime ? (
+                        <>
+                          <Clock className="mr-2 h-4 w-4" />
+                          Sort by Order
+                        </>
+                      ) : (
+                        <>
+                          <SortAsc className="mr-2 h-4 w-4" />
+                          Sort by Time
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  {getSortedHistory().map((q, index) => (
                     <div
                       key={index}
                       className={`p-4 rounded-lg ${
@@ -216,7 +249,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
                           {q.num1} {q.operation} {q.num2} = {q.userAnswer}
                         </span>
                         <div className="text-sm text-muted-foreground">
-                          {getTimeSpent(index)}s
+                          {getTimeSpent(questionHistory.indexOf(q))}s
                         </div>
                       </div>
                       {!q.isCorrect && (
