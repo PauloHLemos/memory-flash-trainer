@@ -340,11 +340,10 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
 
           {difficulty === 'custom' && (
             <div className="space-y-4 p-4 border rounded-lg">
-              <h3 className="font-semibold">Custom Ranges</h3>
-              
-              <div className="space-y-3">
+              <h3 className="font-semibold mb-3">Custom Ranges</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Addition (max number)</Label>
+                  <Label className="text-sm text-muted-foreground">Addition (max)</Label>
                   <Input
                     type="number"
                     value={customRanges.addition.max}
@@ -354,32 +353,28 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
                   />
                 </div>
 
-                <div>
-                  <Label>Subtraction</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-1">
-                    <div>
-                      <Label className="text-sm">Min</Label>
-                      <Input
-                        type="number"
-                        value={customRanges.subtraction.min}
-                        onChange={(e) => handleCustomRangeChange('subtraction', 'min', parseInt(e.target.value))}
-                        min="1"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-sm">Max</Label>
-                      <Input
-                        type="number"
-                        value={customRanges.subtraction.max}
-                        onChange={(e) => handleCustomRangeChange('subtraction', 'max', parseInt(e.target.value))}
-                        min="1"
-                      />
-                    </div>
+                <div className="space-y-2">
+                  <Label className="text-sm text-muted-foreground">Subtraction</Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Input
+                      type="number"
+                      value={customRanges.subtraction.min}
+                      onChange={(e) => handleCustomRangeChange('subtraction', 'min', parseInt(e.target.value))}
+                      min="1"
+                      placeholder="Min"
+                    />
+                    <Input
+                      type="number"
+                      value={customRanges.subtraction.max}
+                      onChange={(e) => handleCustomRangeChange('subtraction', 'max', parseInt(e.target.value))}
+                      min="1"
+                      placeholder="Max"
+                    />
                   </div>
                 </div>
 
                 <div>
-                  <Label>Multiplication (max number)</Label>
+                  <Label className="text-sm text-muted-foreground">Multiplication (max)</Label>
                   <Input
                     type="number"
                     value={customRanges.multiplication.max}
@@ -390,7 +385,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
                 </div>
 
                 <div>
-                  <Label>Division (max number)</Label>
+                  <Label className="text-sm text-muted-foreground">Division (max)</Label>
                   <Input
                     type="number"
                     value={customRanges.division.max}
