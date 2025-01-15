@@ -18,6 +18,7 @@ const MemoryGame = () => {
   const [initialSize, setInitialSize] = useState<number>(5);
   const [currentSize, setCurrentSize] = useState<number>(5);
   const [isWrongAnswer, setIsWrongAnswer] = useState<boolean>(false);
+  const [hasPlayed, setHasPlayed] = useState<boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -52,6 +53,10 @@ const MemoryGame = () => {
     setIsPlaying(true);
     setAnswer('');
     setIsWrongAnswer(false);
+    if (!hasPlayed) {
+      setScore(0);
+    }
+    setHasPlayed(true);
   };
 
   const handleSubmit = (submittedAnswer: string) => {
@@ -82,7 +87,6 @@ const MemoryGame = () => {
         description: `The correct sequence was ${sequence}`,
         variant: "destructive",
       });
-      setScore(0);
       setIsPlaying(false);
     }
   };
@@ -106,6 +110,7 @@ const MemoryGame = () => {
         setInitialSize={setInitialSize}
         currentSize={currentSize}
         isShowing={isShowing}
+        hasPlayed={hasPlayed}
       />
     </div>
   );

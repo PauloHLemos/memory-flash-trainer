@@ -18,6 +18,7 @@ interface GameControlsProps {
   setInitialSize: (value: number) => void;
   currentSize: number;
   isShowing: boolean;
+  hasPlayed: boolean;
 }
 
 const GameControls = ({
@@ -33,6 +34,7 @@ const GameControls = ({
   setInitialSize,
   currentSize,
   isShowing,
+  hasPlayed,
 }: GameControlsProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -72,13 +74,15 @@ const GameControls = ({
         <div className="text-right space-y-1">
           <div className="text-sm text-muted-foreground">Score</div>
           <div className="text-2xl font-semibold">{score}</div>
-          <div className={cn(
-            "text-sm text-muted-foreground transition-all",
-            isLevelUp && "animate-bounce text-game-correct"
-          )}>
-            Length: {currentSize}
-            {isLevelUp && " 🎉"}
-          </div>
+          {isPlaying && (
+            <div className={cn(
+              "text-sm text-muted-foreground transition-all",
+              isLevelUp && "animate-bounce text-game-correct"
+            )}>
+              Length: {currentSize}
+              {isLevelUp && " 🎉"}
+            </div>
+          )}
         </div>
       </div>
 
@@ -99,7 +103,7 @@ const GameControls = ({
             />
           </div>
           <Button onClick={onStart} className="w-full">
-            Start Game
+            {hasPlayed ? "Play Again" : "Start Game"}
           </Button>
         </div>
       ) : (
