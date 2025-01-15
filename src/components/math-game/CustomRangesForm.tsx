@@ -28,7 +28,7 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
               value={customRanges.addition.max}
               onChange={(e) => onRangeChange('addition', 'max', parseInt(e.target.value))}
               min="1"
-              className="mt-1"
+              className="mt-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               placeholder="Max value"
             />
           )}
@@ -51,6 +51,7 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
                 value={customRanges.subtraction.min}
                 onChange={(e) => onRangeChange('subtraction', 'min', parseInt(e.target.value))}
                 min="1"
+                className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 placeholder="Min"
               />
               <Input
@@ -58,6 +59,7 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
                 value={customRanges.subtraction.max}
                 onChange={(e) => onRangeChange('subtraction', 'max', parseInt(e.target.value))}
                 min="1"
+                className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 placeholder="Max"
               />
             </div>
@@ -80,7 +82,7 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
               value={customRanges.multiplication.max}
               onChange={(e) => onRangeChange('multiplication', 'max', parseInt(e.target.value))}
               min="1"
-              className="mt-1"
+              className="mt-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               placeholder="Max value"
             />
           )}
@@ -102,7 +104,7 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
               value={customRanges.division.max}
               onChange={(e) => onRangeChange('division', 'max', parseInt(e.target.value))}
               min="1"
-              className="mt-1"
+              className="mt-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               placeholder="Max value"
             />
           )}
