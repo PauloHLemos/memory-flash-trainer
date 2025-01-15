@@ -61,6 +61,13 @@ const DIFFICULTY_RANGES = {
   }
 };
 
+interface CustomRanges {
+  addition: { max: number };
+  subtraction: { min: number; max: number };
+  multiplication: { max: number };
+  division: { max: number };
+}
+
 const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -76,12 +83,18 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [sortByTime, setSortByTime] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [customRanges, setCustomRanges] = useState<CustomRanges>({
+    addition: { max: 1000 },
+    subtraction: { min: 501, max: 1000 },
+    multiplication: { max: 100 },
+    division: { max: 100 }
+  });
 
   const generateQuestion = (): Question => {
     const operations: Operation[] = ["+", "-", "×", "÷"];
     const operation = operations[Math.floor(Math.random() * operations.length)];
     let num1: number, num2: number, answer: number;
-    const ranges = DIFFICULTY_RANGES[difficulty];
+    const ranges = difficulty === 'custom' ? customRanges : DIFFICULTY_RANGES[difficulty];
 
     switch (operation) {
       case "+":
@@ -210,6 +223,20 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     ? Math.round((score / (score + wrongAnswers)) * 100) 
     : 0;
 
+  const handleCustomRangeChange = (
+    operation: keyof CustomRanges,
+    field: 'max' | 'min',
+    value: number
+  ) => {
+    setCustomRanges(prev => ({
+      ...prev,
+      [operation]: {
+        ...prev[operation],
+        [field]: Math.max(1, value)
+      }
+    }));
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -310,6 +337,72 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
               ))}
             </RadioGroup>
           </div>
+
+          {difficulty === 'custom' && (
+            <div className="space-y-4 p-4 border rounded-lg">
+              <h3 className="font-semibold">Custom Ranges</h3>
+              
+              <div className="space-y-3">
+                <div>
+                  <Label>Addition (max number)</Label>
+                  <Input
+                    type="number"
+                    value={customRanges.addition.max}
+                    onChange={(e) => handleCustomRangeChange('addition', 'max', parseInt(e.target.value))}
+                    min="1"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label>Subtraction</Label>
+                  <div className="grid grid-cols-2 gap-2 mt-1">
+                    <div>
+                      <Label className="text-sm">Min</Label>
+                      <Input
+                        type="number"
+                        value={customRanges.subtraction.min}
+                        onChange={(e) => handleCustomRangeChange('subtraction', 'min', parseInt(e.target.value))}
+                        min="1"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm">Max</Label>
+                      <Input
+                        type="number"
+                        value={customRanges.subtraction.max}
+                        onChange={(e) => handleCustomRangeChange('subtraction', 'max', parseInt(e.target.value))}
+                        min="1"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Multiplication (max number)</Label>
+                  <Input
+                    type="number"
+                    value={customRanges.multiplication.max}
+                    onChange={(e) => handleCustomRangeChange('multiplication', 'max', parseInt(e.target.value))}
+                    min="1"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label>Division (max number)</Label>
+                  <Input
+                    type="number"
+                    value={customRanges.division.max}
+                    onChange={(e) => handleCustomRangeChange('division', 'max', parseInt(e.target.value))}
+                    min="1"
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="space-y-3">
             <Label>Game Duration</Label>
             <RadioGroup
