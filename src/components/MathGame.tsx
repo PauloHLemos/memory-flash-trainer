@@ -158,10 +158,10 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     ? Math.round((score / (score + wrongAnswers)) * 100) 
     : 0;
 
-  const getTimeSpent = (index: number) => {
+  const getTimeSpent = (index: number): string => {
     const current = questionHistory[index];
     const next = questionHistory[index + 1];
-    if (!current) return 0;
+    if (!current) return "0.0";
     
     const start = current.timestamp;
     const end = next ? next.timestamp : (gameEnded ? Date.now() : start);
