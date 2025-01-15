@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 
 interface GameControlsProps {
   onStart: () => void;
@@ -15,6 +16,7 @@ interface GameControlsProps {
   setSpeed: (value: number) => void;
   initialSize: number;
   setInitialSize: (value: number) => void;
+  currentSize: number;
 }
 
 const GameControls = ({
@@ -28,6 +30,7 @@ const GameControls = ({
   setSpeed,
   initialSize,
   setInitialSize,
+  currentSize,
 }: GameControlsProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,9 +39,10 @@ const GameControls = ({
 
   const handleInitialSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
-    // Ensure the value is at least 1
     setInitialSize(Math.max(1, value));
   };
+
+  const isLevelUp = score > 0 && score % 3 === 0;
 
   return (
     <div className="space-y-6">
@@ -55,9 +59,16 @@ const GameControls = ({
             className="w-24 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </div>
-        <div className="text-right">
+        <div className="text-right space-y-1">
           <div className="text-sm text-muted-foreground">Score</div>
           <div className="text-2xl font-semibold">{score}</div>
+          <div className={cn(
+            "text-sm text-muted-foreground transition-all",
+            isLevelUp && "animate-bounce text-game-correct"
+          )}>
+            Length: {currentSize}
+            {isLevelUp && " 🎉"}
+          </div>
         </div>
       </div>
 

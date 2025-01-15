@@ -90,6 +90,7 @@ const MemoryGame = () => {
         setSpeed={setSpeed}
         initialSize={initialSize}
         setInitialSize={setInitialSize}
+        currentSize={currentSize}
       />
     </div>
   );
