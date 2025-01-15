@@ -12,6 +12,8 @@ interface GameControlsProps {
   score: number;
   speed: number;
   setSpeed: (value: number) => void;
+  initialSize: number;
+  setInitialSize: (value: number) => void;
 }
 
 const GameControls = ({
@@ -23,6 +25,8 @@ const GameControls = ({
   score,
   speed,
   setSpeed,
+  initialSize,
+  setInitialSize,
 }: GameControlsProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +45,18 @@ const GameControls = ({
             step="0.1"
             value={speed}
             onChange={(e) => setSpeed(Number(e.target.value))}
+            disabled={isPlaying}
+            className="w-24"
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>Initial Size</Label>
+          <Input
+            type="number"
+            min="1"
+            max="10"
+            value={initialSize}
+            onChange={(e) => setInitialSize(Number(e.target.value))}
             disabled={isPlaying}
             className="w-24"
           />

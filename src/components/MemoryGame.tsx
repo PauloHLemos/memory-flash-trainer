@@ -15,6 +15,8 @@ const MemoryGame = () => {
   const [answer, setAnswer] = useState<string>('');
   const [score, setScore] = useState<number>(0);
   const [speed, setSpeed] = useState<number>(1);
+  const [initialSize, setInitialSize] = useState<number>(5);
+  const [currentSize, setCurrentSize] = useState<number>(5);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,7 +34,8 @@ const MemoryGame = () => {
   }, [currentIndex, isPlaying, sequence.length, speed]);
 
   const startGame = () => {
-    const newSequence = generateSequence(5);
+    setCurrentSize(initialSize);
+    const newSequence = generateSequence(initialSize);
     setSequence(newSequence);
     setCurrentIndex(0);
     setIsPlaying(true);
@@ -47,8 +50,15 @@ const MemoryGame = () => {
         className: "bg-game-correct text-white",
       });
       setScore(prev => prev + 1);
+      
+      // Increase sequence size every 3 correct answers
+      const newSize = score > 0 && (score + 1) % 3 === 0 
+        ? currentSize + 1 
+        : currentSize;
+      setCurrentSize(newSize);
+      
       // Continue with a new sequence immediately
-      const newSequence = generateSequence(5);
+      const newSequence = generateSequence(newSize);
       setSequence(newSequence);
       setCurrentIndex(0);
       setAnswer('');
@@ -78,6 +88,8 @@ const MemoryGame = () => {
         score={score}
         speed={speed}
         setSpeed={setSpeed}
+        initialSize={initialSize}
+        setInitialSize={setInitialSize}
       />
     </div>
   );
