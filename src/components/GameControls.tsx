@@ -60,7 +60,7 @@ const GameControls = ({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <Label>Initial Size</Label>
+          <Label>Starting Length</Label>
           <Input
             type="number"
             min="1"
