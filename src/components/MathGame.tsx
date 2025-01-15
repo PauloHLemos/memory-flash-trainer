@@ -42,22 +42,22 @@ const DIFFICULTY_RANGES = {
     division: { max: 10 }
   },
   medium: {
-    addition: { max: 50 },
-    subtraction: { min: 26, max: 50 },
-    multiplication: { max: 12 },
-    division: { max: 12 }
-  },
-  hard: {
     addition: { max: 100 },
     subtraction: { min: 51, max: 100 },
     multiplication: { max: 15 },
     division: { max: 15 }
   },
+  hard: {
+    addition: { max: 1000 },
+    subtraction: { min: 501, max: 1000 },
+    multiplication: { max: 100 },
+    division: { max: 100 }
+  },
   custom: {
-    addition: { max: 50 },
-    subtraction: { min: 26, max: 50 },
-    multiplication: { max: 12 },
-    division: { max: 12 }
+    addition: { max: 100 },
+    subtraction: { min: 51, max: 100 },
+    multiplication: { max: 15 },
+    division: { max: 15 }
   }
 };
 
