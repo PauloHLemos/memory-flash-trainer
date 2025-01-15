@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import MathGame from "@/components/MathGame";
+import { useState } from "react";
 
 const MathTrainer = () => {
+  const [isWrongAnswer, setIsWrongAnswer] = useState(false);
+
   return (
-    <div className="min-h-screen p-8 bg-background">
+    <div className={`min-h-screen p-8 bg-background ${isWrongAnswer ? "animate-wrong-answer" : ""}`}>
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <Link to="/">
@@ -17,7 +20,10 @@ const MathTrainer = () => {
             Improve your mental math skills with rapid-fire calculations. Answer as many questions as you can!
           </p>
         </div>
-        <MathGame />
+        <MathGame onWrongAnswer={() => {
+          setIsWrongAnswer(true);
+          setTimeout(() => setIsWrongAnswer(false), 500);
+        }} />
       </div>
     </div>
   );
