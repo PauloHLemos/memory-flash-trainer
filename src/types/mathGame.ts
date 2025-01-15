@@ -14,11 +14,17 @@ export interface QuestionHistory extends Question {
   timestamp: number;
 }
 
+export interface OperationRange {
+  enabled?: boolean;
+  min?: number;
+  max: number;
+}
+
 export interface CustomRanges {
-  addition: { max: number };
-  subtraction: { min: number; max: number };
-  multiplication: { max: number };
-  division: { max: number };
+  addition: OperationRange;
+  subtraction: OperationRange;
+  multiplication: OperationRange;
+  division: OperationRange;
 }
 
 export const TIME_OPTIONS = [
@@ -48,9 +54,9 @@ export const DIFFICULTY_RANGES = {
     division: { max: 100 }
   },
   custom: {
-    addition: { max: 1000 },
-    subtraction: { min: 501, max: 1000 },
-    multiplication: { max: 100 },
-    division: { max: 100 }
+    addition: { enabled: true, max: 1000 },
+    subtraction: { enabled: true, min: 501, max: 1000 },
+    multiplication: { enabled: true, max: 100 },
+    division: { enabled: true, max: 100 }
   }
 };

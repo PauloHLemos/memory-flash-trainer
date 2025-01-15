@@ -1,10 +1,22 @@
 import { Question, Operation, Difficulty, CustomRanges, DIFFICULTY_RANGES } from "@/types/mathGame";
 
 export const generateQuestion = (difficulty: Difficulty, customRanges: CustomRanges): Question => {
-  const operations: Operation[] = ["+", "-", "×", "÷"];
+  const ranges = difficulty === 'custom' ? customRanges : DIFFICULTY_RANGES[difficulty];
+  
+  // Get available operations based on enabled status in custom mode
+  const operations: Operation[] = [];
+  if (difficulty !== 'custom' || ranges.addition.enabled) operations.push("+");
+  if (difficulty !== 'custom' || ranges.subtraction.enabled) operations.push("-");
+  if (difficulty !== 'custom' || ranges.multiplication.enabled) operations.push("×");
+  if (difficulty !== 'custom' || ranges.division.enabled) operations.push("÷");
+
+  // If no operations are enabled, default to addition
+  if (operations.length === 0) {
+    operations.push("+");
+  }
+
   const operation = operations[Math.floor(Math.random() * operations.length)];
   let num1: number, num2: number, answer: number;
-  const ranges = difficulty === 'custom' ? customRanges : DIFFICULTY_RANGES[difficulty];
 
   switch (operation) {
     case "+":
