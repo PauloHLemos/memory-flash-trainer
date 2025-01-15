@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 
 interface GameControlsProps {
   onStart: () => void;
@@ -37,19 +38,6 @@ const GameControls = ({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <Label>Speed (seconds)</Label>
-          <Input
-            type="number"
-            min="0.5"
-            max="3"
-            step="0.1"
-            value={speed}
-            onChange={(e) => setSpeed(Number(e.target.value))}
-            disabled={isPlaying}
-            className="w-24"
-          />
-        </div>
-        <div className="space-y-1">
           <Label>Initial Size</Label>
           <Input
             type="number"
@@ -68,9 +56,25 @@ const GameControls = ({
       </div>
 
       {!isPlaying ? (
-        <Button onClick={onStart} className="w-full">
-          Start Game
-        </Button>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <Label className="text-sm text-muted-foreground">Speed</Label>
+              <span className="text-sm text-muted-foreground">{speed}s</span>
+            </div>
+            <Slider
+              value={[speed]}
+              onValueChange={(value) => setSpeed(value[0])}
+              min={0.5}
+              max={3}
+              step={0.1}
+              className="w-full"
+            />
+          </div>
+          <Button onClick={onStart} className="w-full">
+            Start Game
+          </Button>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-2">
           <Input
