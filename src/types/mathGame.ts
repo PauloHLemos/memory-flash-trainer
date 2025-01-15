@@ -36,22 +36,22 @@ export const TIME_OPTIONS = [
 
 export const DIFFICULTY_RANGES = {
   easy: {
-    addition: { max: 20 },
-    subtraction: { min: 1, max: 20 },
-    multiplication: { max: 10 },
-    division: { max: 10 }
+    addition: { enabled: true, max: 20 },
+    subtraction: { enabled: true, min: 1, max: 20 },
+    multiplication: { enabled: true, max: 10 },
+    division: { enabled: true, max: 10 }
   },
   medium: {
-    addition: { max: 100 },
-    subtraction: { min: 1, max: 100 },
-    multiplication: { max: 25 },
-    division: { max: 25 }
+    addition: { enabled: true, max: 100 },
+    subtraction: { enabled: true, min: 1, max: 100 },
+    multiplication: { enabled: true, max: 25 },
+    division: { enabled: true, max: 25 }
   },
   hard: {
-    addition: { max: 1000 },
-    subtraction: { min: 1, max: 1000 },
-    multiplication: { max: 100 },
-    division: { max: 100 }
+    addition: { enabled: true, max: 1000 },
+    subtraction: { enabled: true, min: 1, max: 1000 },
+    multiplication: { enabled: true, max: 100 },
+    division: { enabled: true, max: 100 }
   },
   custom: {
     addition: { enabled: true, max: 1000 },
