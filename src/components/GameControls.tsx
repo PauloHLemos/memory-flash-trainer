@@ -101,6 +101,7 @@ const GameControls = ({
             onChange={(e) => setAnswer(e.target.value)}
             pattern="[0-9]*"
             inputMode="numeric"
+            disabled={currentSize > answer.length}
             autoFocus
           />
           <Button type="submit" className="w-full">
