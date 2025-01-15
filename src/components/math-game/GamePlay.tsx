@@ -32,7 +32,7 @@ const GamePlay = ({
           value={userAnswer}
           onChange={(e) => setUserAnswer(e.target.value)}
           placeholder="Enter your answer"
-          className="text-lg"
+          className="text-lg [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           autoFocus
         />
         <Button type="submit">Submit</Button>
