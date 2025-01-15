@@ -144,7 +144,6 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     const parsedAnswer = parseInt(userAnswer);
     const isCorrect = parsedAnswer === currentQuestion.answer;
     
-    // Add to history
     setQuestionHistory(prev => [...prev, {
       ...currentQuestion,
       userAnswer: parsedAnswer,
@@ -340,7 +339,6 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
 
           {difficulty === 'custom' && (
             <div className="space-y-4 p-4 border rounded-lg">
-              <h3 className="font-semibold mb-3">Custom Ranges</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label className="text-sm text-muted-foreground">Addition (max)</Label>
