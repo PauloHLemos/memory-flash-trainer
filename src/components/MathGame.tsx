@@ -23,10 +23,10 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [questionHistory, setQuestionHistory] = useState<QuestionHistory[]>([]);
   const { toast } = useToast();
   const [customRanges, setCustomRanges] = useState<CustomRanges>({
-    addition: { enabled: true, max: 1000 },
-    subtraction: { enabled: true, min: 501, max: 1000 },
-    multiplication: { enabled: true, max: 100 },
-    division: { enabled: true, max: 100 }
+    addition: { enabled: true, max: DIFFICULTY_RANGES.medium.addition.max },
+    subtraction: { enabled: true, min: 1, max: DIFFICULTY_RANGES.medium.subtraction.max },
+    multiplication: { enabled: true, max: DIFFICULTY_RANGES.medium.multiplication.max },
+    division: { enabled: true, max: DIFFICULTY_RANGES.medium.division.max }
   });
 
   const startGame = () => {
