@@ -6,6 +6,7 @@ export interface Question {
   num2: number;
   operation: Operation;
   answer: number;
+  generatedAt: number;
 }
 
 export interface QuestionHistory extends Question {

@@ -45,5 +45,5 @@ export const generateQuestion = (difficulty: Difficulty, customRanges: CustomRan
       answer = 0;
   }
 
-  return { num1, num2, operation, answer };
+  return { num1, num2, operation, answer, generatedAt: Date.now() };
 };

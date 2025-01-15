@@ -26,22 +26,18 @@ const GameSummary = ({
 
   const getTimeSpent = (index: number): string => {
     const current = questionHistory[index];
-    const next = questionHistory[index + 1];
     if (!current) return "0.0";
     
-    const start = current.timestamp;
-    const end = next ? next.timestamp : (gameEnded ? Date.now() : start);
-    return ((end - start) / 1000).toFixed(1);
+    const timeSpent = (current.timestamp - current.generatedAt) / 1000;
+    return timeSpent.toFixed(1);
   };
 
   const getSortedHistory = () => {
     if (!sortByTime) return questionHistory;
     
     return [...questionHistory].sort((a, b) => {
-      const aIndex = questionHistory.indexOf(a);
-      const bIndex = questionHistory.indexOf(b);
-      const aTime = parseFloat(getTimeSpent(aIndex));
-      const bTime = parseFloat(getTimeSpent(bIndex));
+      const aTime = (a.timestamp - a.generatedAt) / 1000;
+      const bTime = (b.timestamp - b.generatedAt) / 1000;
       return bTime - aTime;
     });
   };
