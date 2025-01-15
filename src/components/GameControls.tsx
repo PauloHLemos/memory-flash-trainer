@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +34,14 @@ const GameControls = ({
   currentSize,
   isShowing,
 }: GameControlsProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!isShowing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isShowing]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(answer);
@@ -97,6 +105,7 @@ const GameControls = ({
       ) : (
         <form onSubmit={handleSubmit} className="space-y-2">
           <Input
+            ref={inputRef}
             type="text"
             placeholder="Enter the number sequence..."
             value={answer}
