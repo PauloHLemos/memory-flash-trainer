@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 
 type Operation = "+" | "-" | "×" | "÷";
 
@@ -12,6 +14,12 @@ interface Question {
   num2: number;
   operation: Operation;
   answer: number;
+}
+
+interface QuestionHistory extends Question {
+  userAnswer: number;
+  isCorrect: boolean;
+  timestamp: number;
 }
 
 interface MathGameProps {
@@ -34,6 +42,8 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [userAnswer, setUserAnswer] = useState("");
   const [gameEnded, setGameEnded] = useState(false);
+  const [questionHistory, setQuestionHistory] = useState<QuestionHistory[]>([]);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -80,6 +90,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     setCurrentQuestion(generateQuestion());
     setUserAnswer("");
     setGameEnded(false);
+    setQuestionHistory([]);
     inputRef.current?.focus();
   };
 
@@ -87,7 +98,17 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     if (!currentQuestion) return;
 
     const parsedAnswer = parseInt(userAnswer);
-    if (parsedAnswer === currentQuestion.answer) {
+    const isCorrect = parsedAnswer === currentQuestion.answer;
+    
+    // Add to history
+    setQuestionHistory(prev => [...prev, {
+      ...currentQuestion,
+      userAnswer: parsedAnswer,
+      isCorrect,
+      timestamp: Date.now()
+    }]);
+
+    if (isCorrect) {
       setScore((prev) => prev + 1);
       toast({
         description: "Correct! +1 point",
@@ -136,6 +157,16 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     ? Math.round((score / (score + wrongAnswers)) * 100) 
     : 0;
 
+  const getTimeSpent = (index: number) => {
+    const current = questionHistory[index];
+    const next = questionHistory[index + 1];
+    if (!current) return 0;
+    
+    const start = current.timestamp;
+    const end = next ? next.timestamp : (gameEnded ? Date.now() : start);
+    return ((end - start) / 1000).toFixed(1);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -146,23 +177,58 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
       {!isPlaying ? (
         <div className="space-y-4">
           {gameEnded && (
-            <div className="p-6 bg-card rounded-lg shadow-sm space-y-2 animate-fade-in">
-              <h3 className="text-xl font-bold text-center mb-4">Game Summary</h3>
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="space-y-1">
-                  <p className="text-muted-foreground">Correct Answers</p>
-                  <p className="text-2xl font-bold text-game-correct">{score}</p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-muted-foreground">Wrong Answers</p>
-                  <p className="text-2xl font-bold text-game-wrong">{wrongAnswers}</p>
-                </div>
-                <div className="col-span-2 space-y-1">
-                  <p className="text-muted-foreground">Accuracy</p>
-                  <p className="text-2xl font-bold">{accuracy}%</p>
+            <>
+              <div className="p-6 bg-card rounded-lg shadow-sm space-y-2 animate-fade-in">
+                <h3 className="text-xl font-bold text-center mb-4">Game Summary</h3>
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div className="space-y-1">
+                    <p className="text-muted-foreground">Correct Answers</p>
+                    <p className="text-2xl font-bold text-game-correct">{score}</p>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-muted-foreground">Wrong Answers</p>
+                    <p className="text-2xl font-bold text-game-wrong">{wrongAnswers}</p>
+                  </div>
+                  <div className="col-span-2 space-y-1">
+                    <p className="text-muted-foreground">Accuracy</p>
+                    <p className="text-2xl font-bold">{accuracy}%</p>
+                  </div>
                 </div>
               </div>
-            </div>
+
+              <Collapsible open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="outline" className="w-full">
+                    {isHistoryOpen ? "Hide" : "Show"} Question History
+                    <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${isHistoryOpen ? "rotate-180" : ""}`} />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-2 mt-4">
+                  {questionHistory.map((q, index) => (
+                    <div
+                      key={index}
+                      className={`p-4 rounded-lg ${
+                        q.isCorrect ? "bg-game-correct/10" : "bg-game-wrong/10"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg">
+                          {q.num1} {q.operation} {q.num2} = {q.userAnswer}
+                        </span>
+                        <div className="text-sm text-muted-foreground">
+                          {getTimeSpent(index)}s
+                        </div>
+                      </div>
+                      {!q.isCorrect && (
+                        <div className="text-sm text-game-wrong mt-1">
+                          Correct answer: {q.answer}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            </>
           )}
           <div className="space-y-3">
             <Label>Game Duration</Label>
