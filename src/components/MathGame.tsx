@@ -18,6 +18,7 @@ const MathGame = () => {
   const [score, setScore] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [userAnswer, setUserAnswer] = useState("");
+  const [isWrongAnswer, setIsWrongAnswer] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -76,6 +77,8 @@ const MathGame = () => {
         className: "bg-game-correct text-white",
       });
     } else {
+      setIsWrongAnswer(true);
+      setTimeout(() => setIsWrongAnswer(false), 500);
       toast({
         description: `Incorrect! The answer was ${currentQuestion.answer}`,
         className: "bg-game-wrong text-white",
@@ -112,7 +115,7 @@ const MathGame = () => {
   }, [isPlaying, timeLeft, score, toast]);
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${isWrongAnswer ? "animate-wrong-answer" : ""}`}>
       <div className="flex justify-between items-center">
         <div className="text-lg font-semibold">Score: {score}</div>
         <div className="text-lg font-semibold">Time: {timeLeft}s</div>

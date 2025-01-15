@@ -62,10 +62,16 @@ export default {
 				"number-fade": {
 					"0%": { opacity: "0", transform: "scale(0.95)" },
 					"100%": { opacity: "1", transform: "scale(1)" }
+				},
+				"wrong-answer": {
+					"0%": { backgroundColor: "transparent" },
+					"50%": { backgroundColor: "#FFDEE2" },
+					"100%": { backgroundColor: "transparent" }
 				}
 			},
 			animation: {
-				"number-fade": "number-fade 0.3s ease-out"
+				"number-fade": "number-fade 0.3s ease-out",
+				"wrong-answer": "wrong-answer 0.5s ease-in-out"
 			}
 		}
 	},
