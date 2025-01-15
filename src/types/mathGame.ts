@@ -15,7 +15,7 @@ export interface QuestionHistory extends Question {
 }
 
 export interface OperationRange {
-  enabled?: boolean;
+  enabled: boolean;
   min?: number;
   max: number;
 }
@@ -54,9 +54,9 @@ export const DIFFICULTY_RANGES = {
     division: { enabled: true, max: 100 }
   },
   custom: {
-    addition: { enabled: true, max: 1000 },
-    subtraction: { enabled: true, min: 501, max: 1000 },
-    multiplication: { enabled: true, max: 100 },
-    division: { enabled: true, max: 100 }
+    addition: { enabled: false, max: 1000 },
+    subtraction: { enabled: false, min: 501, max: 1000 },
+    multiplication: { enabled: false, max: 100 },
+    division: { enabled: false, max: 100 }
   }
-};
+} as const;
