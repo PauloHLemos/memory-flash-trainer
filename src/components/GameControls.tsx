@@ -52,7 +52,7 @@ const GameControls = ({
             value={initialSize}
             onChange={handleInitialSizeChange}
             disabled={isPlaying}
-            className="w-24"
+            className="w-24 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </div>
         <div className="text-right">
