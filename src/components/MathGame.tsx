@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 type Operation = "+" | "-" | "×" | "÷";
 
@@ -16,9 +18,17 @@ interface MathGameProps {
   onWrongAnswer: () => void;
 }
 
+const TIME_OPTIONS = [
+  { value: "15", label: "15s" },
+  { value: "30", label: "30s" },
+  { value: "60", label: "60s" },
+  { value: "120", label: "120s" },
+];
+
 const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
+  const [selectedTime, setSelectedTime] = useState("60");
   const [score, setScore] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -65,7 +75,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     setIsPlaying(true);
     setScore(0);
     setWrongAnswers(0);
-    setTimeLeft(60);
+    setTimeLeft(Number(selectedTime));
     setCurrentQuestion(generateQuestion());
     setUserAnswer("");
     inputRef.current?.focus();
@@ -134,9 +144,26 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
       </div>
 
       {!isPlaying ? (
-        <Button onClick={startGame} className="w-full">
-          {timeLeft === 60 ? "Start Game" : "Play Again"}
-        </Button>
+        <div className="space-y-4">
+          <div className="space-y-3">
+            <Label>Game Duration</Label>
+            <RadioGroup
+              value={selectedTime}
+              onValueChange={setSelectedTime}
+              className="flex flex-wrap gap-4"
+            >
+              {TIME_OPTIONS.map((option) => (
+                <div key={option.value} className="flex items-center space-x-2">
+                  <RadioGroupItem value={option.value} id={`time-${option.value}`} />
+                  <Label htmlFor={`time-${option.value}`}>{option.label}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+          <Button onClick={startGame} className="w-full">
+            {timeLeft === Number(selectedTime) ? "Start Game" : "Play Again"}
+          </Button>
+        </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="text-center">
