@@ -15,10 +15,10 @@ export interface QuestionHistory extends Question {
 }
 
 export interface DifficultyRanges {
-  addition: { max: number; enabled?: boolean };
-  subtraction: { min: number; max: number; enabled?: boolean };
-  multiplication: { max: number; enabled?: boolean };
-  division: { max: number; enabled?: boolean };
+  addition: { max: number };
+  subtraction: { min: number; max: number };
+  multiplication: { max: number };
+  division: { max: number };
 }
 
 export interface CustomRanges {
