@@ -8,6 +8,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, Clock, SortAsc } from "lucide-react";
 
 type Operation = "+" | "-" | "×" | "÷";
+type Difficulty = "easy" | "medium" | "hard" | "custom";
 
 interface Question {
   num1: number;
@@ -33,10 +34,38 @@ const TIME_OPTIONS = [
   { value: "120", label: "120s" },
 ];
 
+const DIFFICULTY_RANGES = {
+  easy: {
+    addition: { max: 20 },
+    subtraction: { min: 11, max: 20 },
+    multiplication: { max: 10 },
+    division: { max: 10 }
+  },
+  medium: {
+    addition: { max: 50 },
+    subtraction: { min: 26, max: 50 },
+    multiplication: { max: 12 },
+    division: { max: 12 }
+  },
+  hard: {
+    addition: { max: 100 },
+    subtraction: { min: 51, max: 100 },
+    multiplication: { max: 15 },
+    division: { max: 15 }
+  },
+  custom: {
+    addition: { max: 50 },
+    subtraction: { min: 26, max: 50 },
+    multiplication: { max: 12 },
+    division: { max: 12 }
+  }
+};
+
 const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
   const [selectedTime, setSelectedTime] = useState("60");
+  const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [score, setScore] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -52,26 +81,27 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     const operations: Operation[] = ["+", "-", "×", "÷"];
     const operation = operations[Math.floor(Math.random() * operations.length)];
     let num1: number, num2: number, answer: number;
+    const ranges = DIFFICULTY_RANGES[difficulty];
 
     switch (operation) {
       case "+":
-        num1 = Math.floor(Math.random() * 50) + 1;
-        num2 = Math.floor(Math.random() * 50) + 1;
+        num1 = Math.floor(Math.random() * ranges.addition.max) + 1;
+        num2 = Math.floor(Math.random() * ranges.addition.max) + 1;
         answer = num1 + num2;
         break;
       case "-":
-        num1 = Math.floor(Math.random() * 50) + 26;
-        num2 = Math.floor(Math.random() * 25) + 1;
+        num1 = Math.floor(Math.random() * (ranges.subtraction.max - ranges.subtraction.min + 1)) + ranges.subtraction.min;
+        num2 = Math.floor(Math.random() * (ranges.subtraction.min - 1)) + 1;
         answer = num1 - num2;
         break;
       case "×":
-        num1 = Math.floor(Math.random() * 12) + 1;
-        num2 = Math.floor(Math.random() * 12) + 1;
+        num1 = Math.floor(Math.random() * ranges.multiplication.max) + 1;
+        num2 = Math.floor(Math.random() * ranges.multiplication.max) + 1;
         answer = num1 * num2;
         break;
       case "÷":
-        num2 = Math.floor(Math.random() * 12) + 1;
-        answer = Math.floor(Math.random() * 12) + 1;
+        num2 = Math.floor(Math.random() * ranges.division.max) + 1;
+        answer = Math.floor(Math.random() * ranges.division.max) + 1;
         num1 = num2 * answer;
         break;
       default:
@@ -136,28 +166,6 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
     }
   };
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isPlaying && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (timeLeft === 0 && isPlaying) {
-      setIsPlaying(false);
-      setGameEnded(true);
-      toast({
-        title: "Game Over!",
-        description: "Check your final statistics below!",
-      });
-    }
-
-    return () => clearInterval(timer);
-  }, [isPlaying, timeLeft, toast]);
-
-  const accuracy = score + wrongAnswers > 0 
-    ? Math.round((score / (score + wrongAnswers)) * 100) 
-    : 0;
-
   const getTimeSpent = (index: number): string => {
     const current = questionHistory[index];
     const next = questionHistory[index + 1];
@@ -179,6 +187,28 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
       return bTime - aTime;
     });
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isPlaying && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0 && isPlaying) {
+      setIsPlaying(false);
+      setGameEnded(true);
+      toast({
+        title: "Game Over!",
+        description: "Check your final statistics below!",
+      });
+    }
+
+    return () => clearInterval(timer);
+  }, [isPlaying, timeLeft, toast]);
+
+  const accuracy = score + wrongAnswers > 0 
+    ? Math.round((score / (score + wrongAnswers)) * 100) 
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -263,6 +293,23 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
               </Collapsible>
             </>
           )}
+          <div className="space-y-3">
+            <Label>Difficulty</Label>
+            <RadioGroup
+              value={difficulty}
+              onValueChange={(value: Difficulty) => setDifficulty(value)}
+              className="flex flex-wrap gap-4"
+            >
+              {Object.keys(DIFFICULTY_RANGES).map((level) => (
+                <div key={level} className="flex items-center space-x-2">
+                  <RadioGroupItem value={level} id={`difficulty-${level}`} />
+                  <Label htmlFor={`difficulty-${level}`} className="capitalize">
+                    {level}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
           <div className="space-y-3">
             <Label>Game Duration</Label>
             <RadioGroup
