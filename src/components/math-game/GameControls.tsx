@@ -30,13 +30,14 @@ const GameControls = ({
     field: 'max' | 'min',
     value: number
   ) => {
-    setCustomRanges((prev: CustomRanges) => ({
-      ...prev,
+    const updatedRanges: CustomRanges = {
+      ...customRanges,
       [operation]: {
-        ...prev[operation],
+        ...customRanges[operation],
         [field]: Math.max(1, value)
       }
-    }));
+    };
+    setCustomRanges(updatedRanges);
   };
 
   return (
