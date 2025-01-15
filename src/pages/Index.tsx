@@ -27,6 +27,21 @@ const Index = () => {
               </CardContent>
             </Card>
           </Link>
+          <Link to="/math-trainer" className="block transition-transform hover:scale-105">
+            <Card className="h-full">
+              <CardHeader>
+                <CardTitle>Math Trainer</CardTitle>
+                <CardDescription>
+                  Improve your mental math skills with rapid-fire calculations
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
+                  <span className="text-4xl font-bold text-muted-foreground">🔢</span>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
           {/* Placeholder for the next game */}
           <Card className="opacity-50">
             <CardHeader>
