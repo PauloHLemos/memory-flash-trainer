@@ -65,7 +65,7 @@ export default {
 				},
 				"wrong-answer": {
 					"0%": { backgroundColor: "transparent" },
-					"50%": { backgroundColor: "#FFDEE2" },
+					"50%": { backgroundColor: "#ef4444" },
 					"100%": { backgroundColor: "transparent" }
 				}
 			},

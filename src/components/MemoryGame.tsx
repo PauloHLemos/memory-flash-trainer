@@ -34,6 +34,16 @@ const MemoryGame = () => {
     return () => clearTimeout(timeout);
   }, [currentIndex, isPlaying, sequence.length, speed]);
 
+  useEffect(() => {
+    const container = document.getElementById('memory-trainer-container');
+    if (container && isWrongAnswer) {
+      container.classList.add('animate-wrong-answer');
+      setTimeout(() => {
+        container.classList.remove('animate-wrong-answer');
+      }, 500);
+    }
+  }, [isWrongAnswer]);
+
   const startGame = () => {
     setCurrentSize(initialSize);
     const newSequence = generateSequence(initialSize);
@@ -67,7 +77,6 @@ const MemoryGame = () => {
       setIsWrongAnswer(false);
     } else {
       setIsWrongAnswer(true);
-      setTimeout(() => setIsWrongAnswer(false), 500);
       toast({
         title: "Incorrect",
         description: `The correct sequence was ${sequence}`,
@@ -79,7 +88,7 @@ const MemoryGame = () => {
   };
 
   return (
-    <div className={`max-w-md mx-auto space-y-8 ${isWrongAnswer ? 'animate-wrong-answer' : ''}`}>
+    <div className="max-w-md mx-auto space-y-8">
       <NumberDisplay
         number={isShowing ? sequence[currentIndex] : null}
         isShowing={isShowing}

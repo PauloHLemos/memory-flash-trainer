@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const MemoryTrainer = () => {
   return (
-    <div className="min-h-screen p-8 bg-background">
+    <div id="memory-trainer-container" className="min-h-screen p-8 bg-background">
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <Link to="/">
