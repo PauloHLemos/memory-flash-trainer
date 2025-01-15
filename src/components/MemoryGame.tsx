@@ -17,6 +17,7 @@ const MemoryGame = () => {
   const [speed, setSpeed] = useState<number>(1);
   const [initialSize, setInitialSize] = useState<number>(5);
   const [currentSize, setCurrentSize] = useState<number>(5);
+  const [isWrongAnswer, setIsWrongAnswer] = useState<boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -40,6 +41,7 @@ const MemoryGame = () => {
     setCurrentIndex(0);
     setIsPlaying(true);
     setAnswer('');
+    setIsWrongAnswer(false);
   };
 
   const handleSubmit = (submittedAnswer: string) => {
@@ -62,7 +64,10 @@ const MemoryGame = () => {
       setSequence(newSequence);
       setCurrentIndex(0);
       setAnswer('');
+      setIsWrongAnswer(false);
     } else {
+      setIsWrongAnswer(true);
+      setTimeout(() => setIsWrongAnswer(false), 500);
       toast({
         title: "Incorrect",
         description: `The correct sequence was ${sequence}`,
@@ -74,7 +79,7 @@ const MemoryGame = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-8">
+    <div className={`max-w-md mx-auto space-y-8 ${isWrongAnswer ? 'animate-wrong-answer' : ''}`}>
       <NumberDisplay
         number={isShowing ? sequence[currentIndex] : null}
         isShowing={isShowing}
