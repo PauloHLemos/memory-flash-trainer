@@ -20,6 +20,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
   const [score, setScore] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [userAnswer, setUserAnswer] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -63,6 +64,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
   const startGame = () => {
     setIsPlaying(true);
     setScore(0);
+    setWrongAnswers(0);
     setTimeLeft(60);
     setCurrentQuestion(generateQuestion());
     setUserAnswer("");
@@ -80,6 +82,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
         className: "bg-game-correct text-white",
       });
     } else {
+      setWrongAnswers((prev) => prev + 1);
       onWrongAnswer();
       toast({
         description: `Incorrect! The answer was ${currentQuestion.answer}`,
@@ -109,12 +112,19 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
       setIsPlaying(false);
       toast({
         title: "Game Over!",
-        description: `Final score: ${score} points`,
+        description: (
+          <div className="space-y-2">
+            <p>Final score: {score} points</p>
+            <p>Correct answers: {score}</p>
+            <p>Wrong answers: {wrongAnswers}</p>
+            <p>Accuracy: {Math.round((score / (score + wrongAnswers)) * 100)}%</p>
+          </div>
+        ),
       });
     }
 
     return () => clearInterval(timer);
-  }, [isPlaying, timeLeft, score, toast]);
+  }, [isPlaying, timeLeft, score, wrongAnswers, toast]);
 
   return (
     <div className="space-y-6">
@@ -125,7 +135,7 @@ const MathGame = ({ onWrongAnswer }: MathGameProps) => {
 
       {!isPlaying ? (
         <Button onClick={startGame} className="w-full">
-          Start Game
+          {timeLeft === 60 ? "Start Game" : "Play Again"}
         </Button>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
