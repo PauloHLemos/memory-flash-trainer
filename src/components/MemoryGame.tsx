@@ -91,6 +91,7 @@ const MemoryGame = () => {
         initialSize={initialSize}
         setInitialSize={setInitialSize}
         currentSize={currentSize}
+        isShowing={isShowing}
       />
     </div>
   );

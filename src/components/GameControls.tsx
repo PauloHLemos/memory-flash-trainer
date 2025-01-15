@@ -17,6 +17,7 @@ interface GameControlsProps {
   initialSize: number;
   setInitialSize: (value: number) => void;
   currentSize: number;
+  isShowing: boolean;
 }
 
 const GameControls = ({
@@ -31,6 +32,7 @@ const GameControls = ({
   initialSize,
   setInitialSize,
   currentSize,
+  isShowing,
 }: GameControlsProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,7 +103,7 @@ const GameControls = ({
             onChange={(e) => setAnswer(e.target.value)}
             pattern="[0-9]*"
             inputMode="numeric"
-            disabled={currentSize > answer.length}
+            disabled={isShowing}
             autoFocus
           />
           <Button type="submit" className="w-full">
