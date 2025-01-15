@@ -17,7 +17,9 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
             <Label className="text-sm text-muted-foreground">Addition</Label>
             <Switch
               checked={customRanges.addition.enabled}
-              onCheckedChange={(checked) => onRangeChange('addition', 'enabled', checked)}
+              onCheckedChange={(checked) => {
+                onRangeChange('addition', 'enabled', checked);
+              }}
             />
           </div>
           {customRanges.addition.enabled && (
@@ -37,7 +39,9 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
             <Label className="text-sm text-muted-foreground">Subtraction</Label>
             <Switch
               checked={customRanges.subtraction.enabled}
-              onCheckedChange={(checked) => onRangeChange('subtraction', 'enabled', checked)}
+              onCheckedChange={(checked) => {
+                onRangeChange('subtraction', 'enabled', checked);
+              }}
             />
           </div>
           {customRanges.subtraction.enabled && (
@@ -65,7 +69,9 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
             <Label className="text-sm text-muted-foreground">Multiplication</Label>
             <Switch
               checked={customRanges.multiplication.enabled}
-              onCheckedChange={(checked) => onRangeChange('multiplication', 'enabled', checked)}
+              onCheckedChange={(checked) => {
+                onRangeChange('multiplication', 'enabled', checked);
+              }}
             />
           </div>
           {customRanges.multiplication.enabled && (
@@ -85,7 +91,9 @@ const CustomRangesForm = ({ customRanges, onRangeChange }: CustomRangesFormProps
             <Label className="text-sm text-muted-foreground">Division</Label>
             <Switch
               checked={customRanges.division.enabled}
-              onCheckedChange={(checked) => onRangeChange('division', 'enabled', checked)}
+              onCheckedChange={(checked) => {
+                onRangeChange('division', 'enabled', checked);
+              }}
             />
           </div>
           {customRanges.division.enabled && (
