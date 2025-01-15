@@ -5,7 +5,7 @@ export interface Question {
   num2: number;
   operation: Operation;
   answer: number;
-  generatedAt: number;
+  generatedAt: number; // Add this field
 }
 
 export interface QuestionHistory extends Question {
@@ -28,9 +28,9 @@ export interface CustomRanges {
   division: { enabled: boolean; max: number };
 }
 
-export type Difficulty = "easy" | "medium" | "hard" | "custom";
+export type Difficulty = "easy" | "medium" | "hard";
 
-export const DIFFICULTY_RANGES: Record<Exclude<Difficulty, "custom">, DifficultyRanges> = {
+export const DIFFICULTY_RANGES: Record<Difficulty, DifficultyRanges> = {
   easy: {
     addition: { max: 10 },
     subtraction: { min: 1, max: 10 },
@@ -50,10 +50,3 @@ export const DIFFICULTY_RANGES: Record<Exclude<Difficulty, "custom">, Difficulty
     division: { max: 100 },
   },
 };
-
-export const TIME_OPTIONS = [
-  { value: "30", label: "30 seconds" },
-  { value: "60", label: "1 minute" },
-  { value: "120", label: "2 minutes" },
-  { value: "300", label: "5 minutes" },
-] as const;

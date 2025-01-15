@@ -1,14 +1,14 @@
 import { Question, Operation, Difficulty, CustomRanges, DIFFICULTY_RANGES } from "@/types/mathGame";
 
 export const generateQuestion = (difficulty: Difficulty, customRanges: CustomRanges): Question => {
-  const ranges = difficulty === 'custom' ? customRanges : DIFFICULTY_RANGES[difficulty as Exclude<Difficulty, "custom">];
+  const ranges = difficulty === 'custom' ? customRanges : DIFFICULTY_RANGES[difficulty];
   
   // Get available operations based on enabled status in custom mode
   const operations: Operation[] = [];
-  if (difficulty !== 'custom' || customRanges.addition.enabled) operations.push("+");
-  if (difficulty !== 'custom' || customRanges.subtraction.enabled) operations.push("-");
-  if (difficulty !== 'custom' || customRanges.multiplication.enabled) operations.push("×");
-  if (difficulty !== 'custom' || customRanges.division.enabled) operations.push("÷");
+  if (difficulty !== 'custom' || ranges.addition.enabled) operations.push("+");
+  if (difficulty !== 'custom' || ranges.subtraction.enabled) operations.push("-");
+  if (difficulty !== 'custom' || ranges.multiplication.enabled) operations.push("×");
+  if (difficulty !== 'custom' || ranges.division.enabled) operations.push("÷");
 
   // If no operations are enabled, default to addition
   if (operations.length === 0) {
@@ -26,7 +26,7 @@ export const generateQuestion = (difficulty: Difficulty, customRanges: CustomRan
       break;
     case "-":
       num1 = Math.floor(Math.random() * (ranges.subtraction.max - ranges.subtraction.min + 1)) + ranges.subtraction.min;
-      num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
+      num2 = Math.floor(Math.random() * (ranges.subtraction.min - 1)) + 1;
       answer = num1 - num2;
       break;
     case "×":
@@ -45,11 +45,5 @@ export const generateQuestion = (difficulty: Difficulty, customRanges: CustomRan
       answer = 0;
   }
 
-  return { 
-    num1, 
-    num2, 
-    operation, 
-    answer,
-    generatedAt: Date.now()
-  };
+  return { num1, num2, operation, answer };
 };
