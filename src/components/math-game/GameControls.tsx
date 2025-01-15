@@ -2,7 +2,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Difficulty, CustomRanges, TIME_OPTIONS } from "@/types/mathGame";
+import { Difficulty, CustomRanges, TIME_OPTIONS, DIFFICULTY_RANGES } from "@/types/mathGame";
 
 interface GameControlsProps {
   difficulty: Difficulty;
@@ -30,7 +30,7 @@ const GameControls = ({
     field: 'max' | 'min',
     value: number
   ) => {
-    setCustomRanges(prev => ({
+    setCustomRanges((prev: CustomRanges) => ({
       ...prev,
       [operation]: {
         ...prev[operation],
